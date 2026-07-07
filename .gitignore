@@ -1,0 +1,15 @@
+.DS_Store
+.venv/
+venv/
+portfoliolab_venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+*.egg-info/
+data/*.csv
+data/*.parquet
+data/catalogs/*.json

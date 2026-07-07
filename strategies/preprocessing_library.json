@@ -1,0 +1,19 @@
+{
+  "preprocessors": [
+    {
+      "id": "none",
+      "name": "None: Use Raw Data",
+      "code": "def preprocess(data, symbols, context):\n    # No preprocessing: use the market data exactly as loaded.\n    return data\n"
+    },
+    {
+      "id": "backfill",
+      "name": "Backfill Missing Bars",
+      "code": "def preprocess(data, symbols, context):\n    # DataFrame columns: date, symbol, open, high, low, close, volume.\n    # Backfill uses the next available future value within each symbol.\n    if pd is None:\n        raise ImportError(\"Install pandas/numpy for DataFrame preprocessing: pip install pandas numpy\")\n\n    frame = data.to_frame()\n    if frame.empty:\n        return data\n\n    selected = list(symbols or data.symbols)\n    dates = sorted(frame[\"date\"].unique())\n    full_index = pd.MultiIndex.from_product([dates, selected], names=[\"date\", \"symbol\"])\n    panel = frame.set_index([\"date\", \"symbol\"]).sort_index().reindex(full_index)\n\n    price_cols = [\"open\", \"high\", \"low\", \"close\"]\n    panel[price_cols] = panel.groupby(level=\"symbol\")[price_cols].bfill()\n    panel[\"volume\"] = panel[\"volume\"].fillna(0.0)\n\n    filled = panel.dropna(subset=[\"close\"]).reset_index()\n    for column in [\"open\", \"high\", \"low\"]:\n        filled[column] = filled[column].fillna(filled[\"close\"])\n    return MarketData.from_frame(filled)\n"
+    },
+    {
+      "id": "forward_fill",
+      "name": "Forward Fill Missing Bars",
+      "code": "def preprocess(data, symbols, context):\n    # DataFrame columns: date, symbol, open, high, low, close, volume.\n    # Forward-fill uses the most recent past value within each symbol.\n    if pd is None:\n        raise ImportError(\"Install pandas/numpy for DataFrame preprocessing: pip install pandas numpy\")\n\n    frame = data.to_frame()\n    if frame.empty:\n        return data\n\n    selected = list(symbols or data.symbols)\n    dates = sorted(frame[\"date\"].unique())\n    full_index = pd.MultiIndex.from_product([dates, selected], names=[\"date\", \"symbol\"])\n    panel = frame.set_index([\"date\", \"symbol\"]).sort_index().reindex(full_index)\n\n    price_cols = [\"open\", \"high\", \"low\", \"close\"]\n    panel[price_cols] = panel.groupby(level=\"symbol\")[price_cols].ffill()\n    panel[\"volume\"] = panel[\"volume\"].fillna(0.0)\n\n    filled = panel.dropna(subset=[\"close\"]).reset_index()\n    for column in [\"open\", \"high\", \"low\"]:\n        filled[column] = filled[column].fillna(filled[\"close\"])\n    return MarketData.from_frame(filled)\n"
+    }
+  ]
+}

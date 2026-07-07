@@ -1,0 +1,29 @@
+{
+  "neutralizers": [
+    {
+      "id": "none",
+      "name": "None",
+      "code": "def neutralize(alpha, groups):\n    return dict(alpha)\n"
+    },
+    {
+      "id": "market",
+      "name": "Market",
+      "code": "def group_for(symbol, stock):\n    # stock is the metadata row from Available Stocks for this symbol.\n    # Common fields: symbol, name, region, sector, industry, exchange.\n    region = stock.get(\"region\") or \"Other\"\n    sector = stock.get(\"sector\") or \"Other\"\n    industry = stock.get(\"industry\") or \"Other\"\n\n    # Custom grouping examples. Return any label you want neutralized together.\n    # if region in {\"China\", \"Japan\", \"Taiwan\"}:\n    #     return \"Asia\"\n    # if sector in {\"Technology\", \"Communication\"}:\n    #     return \"Growth\"\n\n    # Market neutralization puts every stock in one bucket.\n    return \"Market\"\n\n\ndef neutralize(alpha, groups):\n    # alpha maps symbol -> raw signal weight.\n    # groups maps symbol -> the bucket returned by group_for.\n    # A bucket with one stock becomes 0 because there is no within-group relative bet.\n    adjusted = {}\n    for group in set(groups.values()):\n        symbols = [symbol for symbol, item_group in groups.items() if item_group == group and symbol in alpha]\n        if not symbols:\n            continue\n        mean_alpha = sum(alpha.get(symbol, 0.0) for symbol in symbols) / len(symbols)\n        for symbol in symbols:\n            adjusted[symbol] = alpha.get(symbol, 0.0) - mean_alpha\n    return adjusted\n"
+    },
+    {
+      "id": "region",
+      "name": "Region",
+      "code": "def group_for(symbol, stock):\n    # stock is the metadata row from Available Stocks for this symbol.\n    # Common fields: symbol, name, region, sector, industry, exchange.\n    region = stock.get(\"region\") or \"Other\"\n    sector = stock.get(\"sector\") or \"Other\"\n    industry = stock.get(\"industry\") or \"Other\"\n\n    # Custom grouping examples. Return any label you want neutralized together.\n    # if region in {\"China\", \"Japan\", \"Taiwan\"}:\n    #     return \"Asia\"\n    # if sector in {\"Technology\", \"Communication\"}:\n    #     return \"Growth\"\n\n    # Region neutralization groups by issuer country/region.\n    return region\n\n\ndef neutralize(alpha, groups):\n    # alpha maps symbol -> raw signal weight.\n    # groups maps symbol -> the bucket returned by group_for.\n    # A bucket with one stock becomes 0 because there is no within-group relative bet.\n    adjusted = {}\n    for group in set(groups.values()):\n        symbols = [symbol for symbol, item_group in groups.items() if item_group == group and symbol in alpha]\n        if not symbols:\n            continue\n        mean_alpha = sum(alpha.get(symbol, 0.0) for symbol in symbols) / len(symbols)\n        for symbol in symbols:\n            adjusted[symbol] = alpha.get(symbol, 0.0) - mean_alpha\n    return adjusted\n"
+    },
+    {
+      "id": "sector",
+      "name": "Sector",
+      "code": "def group_for(symbol, stock):\n    # stock is the metadata row from Available Stocks for this symbol.\n    # Common fields: symbol, name, region, sector, industry, exchange.\n    region = stock.get(\"region\") or \"Other\"\n    sector = stock.get(\"sector\") or \"Other\"\n    industry = stock.get(\"industry\") or \"Other\"\n\n    # Custom grouping examples. Return any label you want neutralized together.\n    # if region in {\"China\", \"Japan\", \"Taiwan\"}:\n    #     return \"Asia\"\n    # if sector in {\"Technology\", \"Communication\"}:\n    #     return \"Growth\"\n\n    # Sector neutralization groups by broad sector.\n    return sector\n\n\ndef neutralize(alpha, groups):\n    # alpha maps symbol -> raw signal weight.\n    # groups maps symbol -> the bucket returned by group_for.\n    # A bucket with one stock becomes 0 because there is no within-group relative bet.\n    adjusted = {}\n    for group in set(groups.values()):\n        symbols = [symbol for symbol, item_group in groups.items() if item_group == group and symbol in alpha]\n        if not symbols:\n            continue\n        mean_alpha = sum(alpha.get(symbol, 0.0) for symbol in symbols) / len(symbols)\n        for symbol in symbols:\n            adjusted[symbol] = alpha.get(symbol, 0.0) - mean_alpha\n    return adjusted\n"
+    },
+    {
+      "id": "industry",
+      "name": "Industry",
+      "code": "def group_for(symbol, stock):\n    # stock is the metadata row from Available Stocks for this symbol.\n    # Common fields: symbol, name, region, sector, industry, exchange.\n    region = stock.get(\"region\") or \"Other\"\n    sector = stock.get(\"sector\") or \"Other\"\n    industry = stock.get(\"industry\") or \"Other\"\n\n    # Custom grouping examples. Return any label you want neutralized together.\n    # if region in {\"China\", \"Japan\", \"Taiwan\"}:\n    #     return \"Asia\"\n    # if sector in {\"Technology\", \"Communication\"}:\n    #     return \"Growth\"\n\n    # Industry neutralization groups by the more specific industry field.\n    return industry\n\n\ndef neutralize(alpha, groups):\n    # alpha maps symbol -> raw signal weight.\n    # groups maps symbol -> the bucket returned by group_for.\n    # A bucket with one stock becomes 0 because there is no within-group relative bet.\n    adjusted = {}\n    for group in set(groups.values()):\n        symbols = [symbol for symbol, item_group in groups.items() if item_group == group and symbol in alpha]\n        if not symbols:\n            continue\n        mean_alpha = sum(alpha.get(symbol, 0.0) for symbol in symbols) / len(symbols)\n        for symbol in symbols:\n            adjusted[symbol] = alpha.get(symbol, 0.0) - mean_alpha\n    return adjusted\n"
+    }
+  ]
+}

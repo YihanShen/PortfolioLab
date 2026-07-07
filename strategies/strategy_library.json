@@ -1,0 +1,19 @@
+{
+  "strategies": [
+    {
+      "id": "none",
+      "name": "None: Use Portfolio Weights",
+      "code": "class Strategy:\n    def compute(self, data, as_of, context):\n        # data is MarketData. For table work, use: frame = data.to_frame()\n        # frame columns: date, symbol, open, high, low, close, volume\n        # pd and np are available when pandas/numpy are installed.\n        return dict(BASE_WEIGHTS)\n"
+    },
+    {
+      "id": "momentum",
+      "name": "Momentum",
+      "code": "class Strategy:\n    def compute(self, data, as_of, context):\n        # Rank selected portfolio stocks by 6-month momentum,\n        # skipping the most recent week to avoid very short-term reversal noise.\n        scores = {}\n        for symbol in SELECTED_SYMBOLS:\n            score = data.return_over(symbol, as_of, lookback=126, skip_recent=5)\n            if score is not None and score > 0:\n                scores[symbol] = score\n\n        selected = sorted(scores, key=scores.get, reverse=True)[:4]\n        if not selected:\n            return {}\n\n        raw_alpha = {symbol: scores[symbol] for symbol in selected}\n        gross = sum(abs(value) for value in raw_alpha.values())\n        target_gross = min(context.max_gross_exposure, 1.0)\n        return {symbol: value * target_gross / gross for symbol, value in raw_alpha.items()}\n"
+    },
+    {
+      "id": "reversion",
+      "name": "Mean Reversion",
+      "code": "class Strategy:\n    def compute(self, data, as_of, context):\n        # Rank selected portfolio stocks by 1-month return and buy the weakest names.\n        # The returned values are raw alpha weights; neutralization may later turn\n        # them into long/short relative positions inside each chosen group.\n        scores = {}\n        for symbol in SELECTED_SYMBOLS:\n            score = data.return_over(symbol, as_of, lookback=21)\n            if score is not None:\n                scores[symbol] = score\n\n        selected = sorted(scores, key=scores.get)[:4]\n        if not selected:\n            return {}\n        strongest_selected_score = scores[selected[-1]]\n        alpha = {\n            symbol: max(strongest_selected_score - scores[symbol], 0.0)\n            for symbol in selected\n        }\n        if sum(alpha.values()) == 0:\n            alpha = {symbol: 1.0 for symbol in selected}\n        gross = sum(abs(value) for value in alpha.values())\n        target_gross = min(context.max_gross_exposure, 1.0)\n        return {symbol: value * target_gross / gross for symbol, value in alpha.items() if value}\n"
+    }
+  ]
+}
