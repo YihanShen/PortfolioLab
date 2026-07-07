@@ -8,12 +8,12 @@ The current app is centered on the interactive `PortfolioLab Console`: a local w
 
 - Search and add the Yahoo Finance symbols you are interested in.
 - Refresh daily OHLCV data only for the current Available Stocks set, with a local CSV cache.
+- Inspect raw stock prices and candlesticks in Stock Research.
 - Choose which research symbols enter the portfolio; unchecked portfolio names keep weight fixed at zero.
 - Preprocess market data before signal construction, including none, backfill, forward-fill, or custom Python code.
 - Use equal weights, manual weights, built-in momentum/reversion strategies, or custom Python strategy code.
 - Save, update, and delete strategy snippets in `strategies/strategy_library.json`.
 - Apply no, market, region, sector, industry, or custom neutralization code.
-- Inspect raw stock prices and candlesticks in Stock Research.
 - Backtest with transaction costs, slippage, train/test split, and long/short weights.
 - Review PnL, normalized prices, signal weights, drawdown, Sharpe, and turnover plots.
 - Review aggregate/training/testing metrics, yearly metrics, and selected-stock exposure tables.
