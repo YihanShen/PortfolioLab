@@ -1,12 +1,12 @@
 # PortfolioLab
 
-PortfolioLab is a personal quantitative research console for building stock universes, testing portfolio/signal ideas, and reviewing backtest behavior visually.
+PortfolioLab is a quantitative research console for building stock universes, testing portfolio/signal ideas, and reviewing backtest behavior visually.
 
 The current app is centered on the interactive `PortfolioLab Console`: a local web UI backed by a small Python standard-library server. It uses Yahoo Finance data through `yfinance` when available, caches downloaded prices locally, and lets you save/edit strategy and neutralization code from the browser.
 
 ## Current Features
 
-- Search and add only the Yahoo Finance symbols you care about.
+- Search and add the Yahoo Finance symbols you are interested in.
 - Refresh daily OHLCV data only for the current Available Stocks set, with a local CSV cache.
 - Choose which research symbols enter the portfolio; unchecked portfolio names keep weight fixed at zero.
 - Preprocess market data before signal construction, including none, backfill, forward-fill, or custom Python code.
