@@ -5,7 +5,7 @@ PortfolioLab is a quantitative research console for building stock universes, te
 The current app is centered on the interactive `PortfolioLab Console`: a local web UI backed by a small Python standard-library server. It uses Yahoo Finance data through `yfinance` when available, caches downloaded prices locally, and lets you save/edit strategy and neutralization code from the browser.
 
 <div align="center">
-  <video src="./tests/demo.mp4" width="850" autoplay loop muted playsinline></video>
+  <video src="https://github.com/user-attachments/assets/e7fed93f-606d-4f9a-9f1d-8299b831d95f" width="850" autoplay loop muted playsinline></video>
 </div>
 
 ## Current Features
