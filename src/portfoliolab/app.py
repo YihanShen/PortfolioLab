@@ -1498,15 +1498,15 @@ INDEX_HTML = r"""<!doctype html>
     }
     .neutralization-panel textarea {
       /* Height of the Neutralization code editor. */
-      min-height: 180px;
+      min-height: 510px;
     }
     .strategy-panel textarea {
       /* Height of the Strategy Code editor inside Strategy Construction. */
-      min-height: 420px;
+      min-height: 320px;
     }
     #preprocessorCode {
       /* Height of the Data Preprocessing code editor. */
-      min-height: 320px;
+      min-height: 220px;
     }
     button.secondary {
       background: #ffffff;
@@ -1523,7 +1523,7 @@ INDEX_HTML = r"""<!doctype html>
       /* Available Stocks: fixed row height for each ticker box. */
       grid-auto-rows: 64px;
       /* Available Stocks: scrollable table height. */
-      height: 325px;
+      height: 430px;
       overflow: auto;
       padding-right: 4px;
     }
