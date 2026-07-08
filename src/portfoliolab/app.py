@@ -1523,7 +1523,7 @@ INDEX_HTML = r"""<!doctype html>
       /* Available Stocks: fixed row height for each ticker box. */
       grid-auto-rows: 64px;
       /* Available Stocks: scrollable table height. */
-      height: 430px;
+      height: 402px;
       overflow: auto;
       padding-right: 4px;
     }
